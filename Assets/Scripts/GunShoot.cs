@@ -30,7 +30,8 @@ public class GunShoot : MonoBehaviour
 
     private void Update()
     {
-        Shooting();
+        Shoot();
+        //Shooting();
     }
 
     private void WeaponEventsSetup()
@@ -44,7 +45,7 @@ public class GunShoot : MonoBehaviour
     private void PickUpWeapon(XRBaseInteractor hand)
     {
         //hand.GetComponent<MeshThingh>().Hide();
-        MeshRenderer[] meshes = hand.GetComponents<MeshRenderer>();
+        MeshRenderer[] meshes = hand.GetComponentsInChildren<MeshRenderer>();
         foreach (var mesh in meshes)
         {
             mesh.enabled = true;
@@ -56,7 +57,7 @@ public class GunShoot : MonoBehaviour
         //hand.GetComponent<MeshThingh>().Show();
         _canShoot = true;
         _flag = false;
-        MeshRenderer[] meshes = hand.GetComponents<MeshRenderer>();
+        MeshRenderer[] meshes = hand.GetComponentsInChildren<MeshRenderer>();
         foreach (var mesh in meshes)
         {
             mesh.enabled = true;
