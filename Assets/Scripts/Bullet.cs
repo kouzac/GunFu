@@ -30,6 +30,7 @@ public class Bullet : MonoBehaviour
             a.transform.parent = other.transform;
             other.GetComponentInParent<ZombieAnimeGirl>().Hurt(dmg*2);
             other.GetComponent<SphereCollider>().enabled = false;
+            Destroy(this.gameObject);
             return;
         }
         if (other.CompareTag("Enemy"))

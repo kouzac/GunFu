@@ -50,7 +50,6 @@ public class ZombieAnimeGirl : MonoBehaviour
     
     public void Hurt(int amount)
     {
-        Debug.Log("OUCH!!!");
         hp -= amount;
         if (hp <= 0 && !_ded)
         {

@@ -30,8 +30,7 @@ public class GunShoot : MonoBehaviour
 
     private void Update()
     {
-        Shoot();
-        //Shooting();
+        Shooting();
     }
 
     private void WeaponEventsSetup()
