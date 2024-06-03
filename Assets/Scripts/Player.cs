@@ -23,9 +23,15 @@ public class Player : MonoBehaviour
     public void Hurt(int amount)
     {
         health -= amount;
+        lowHealth.SetActive(true);
+        StopCoroutine("Ouch");
         if (health <= (_maxHealth / 4))
         {
             lowHealth.SetActive(true);
+        }
+        else
+        {
+            StartCoroutine("Ouch");
         }
         if (health <= 0)
         {
@@ -34,5 +40,11 @@ public class Player : MonoBehaviour
             deathExtra.SetActive(true);
             invertColors.SetActive(true);
         }
+    }
+
+    private IEnumerator Ouch()
+    {
+        yield return new WaitForSeconds(0.375f);
+        lowHealth.SetActive(false);
     }
 }
