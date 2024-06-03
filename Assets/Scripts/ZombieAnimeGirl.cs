@@ -23,8 +23,8 @@ public class ZombieAnimeGirl : MonoBehaviour
         _crawler = false;
         player = GameObject.FindWithTag("Player");
         _rb = this.GetComponent<Rigidbody>();
-        animator.SetBool("MoveAlt", (Random.Range(0, 10) > 5));
-        //animator.SetBool("AttAlt", (Random.Range(0, 10) > 5));
+        animator.SetBool("Alt", (Random.Range(0, 10) > 5));
+        animator.SetBool("Spawn", true);
     }
 
     void Update()
@@ -43,8 +43,8 @@ public class ZombieAnimeGirl : MonoBehaviour
     private void AnimationUpdates()
     {
         float sped = Mathf.Abs(_rb.velocity.x) + Mathf.Abs(_rb.velocity.z);
-        animator.SetBool("Moving", (sped > 0.125));
-        animator.SetFloat("MoveSpeed", sped);
+        animator.SetBool("Move", (sped > 0.125));
+        animator.SetBool("Idle", (sped < 0.125));
         animator.SetBool("Crawl", _crawler);
     }
     
@@ -53,14 +53,13 @@ public class ZombieAnimeGirl : MonoBehaviour
         hp -= amount;
         if (hp <= 0 && !_ded)
         {
-            animator.SetBool("Dying", true);
-            animator.SetInteger("DeathNum", (int)Random.Range(0, 2));
+            animator.SetBool("Death", true);
             hp = 0;
             if (!_crawler)
             {
                 _crawler = (Random.Range(0, 10) < 1);
                 hp = (_crawler) ? (int)Random.Range(1, _initHp) : 0;
-                animator.SetBool("Dying", false);
+                animator.SetBool("Death", false);
             }
             if (hp <= 0)
             {

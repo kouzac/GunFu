@@ -17,14 +17,17 @@ public class GunShootRayCast : MonoBehaviour
     [SerializeField] private int dmg;
     [SerializeField] private float shootingRange;
     [SerializeField] private float shootInterval;
+    [SerializeField] private bool hasAutoShoot;
     [SerializeField] private Transform laserStart;
     [SerializeField] private LineRenderer lineRenderer;
     [SerializeField] private LayerMask selfLayer;
     [SerializeField] private GameObject laserEnd;
     [SerializeField] private GameObject bulletHoleContainer, bulletHolePrefab, bulletHoleExtra;
+    [SerializeField] private GameObject rHand, lHand;
 
     private bool _canShoot;
-    private bool _flag;
+    private bool _isShooting;
+    private bool _grabbed;
     private XRGrabInteractable _xrInteractable;
     private RaycastHit _hit;
     private Transform _laserEnd;
@@ -42,7 +45,7 @@ public class GunShootRayCast : MonoBehaviour
         _dir = nozzle.forward;
         _dir.Normalize();
         
-        Shooting();
+        if (hasAutoShoot && _canShoot) Shooting();
         LaserThing();
     }
 
@@ -56,37 +59,69 @@ public class GunShootRayCast : MonoBehaviour
 
     private void PickUpWeapon(XRBaseInteractor hand)
     {
-        MeshRenderer[] meshes = hand.GetComponentsInChildren<MeshRenderer>();
-        foreach (var mesh in meshes)
+        if (hand.containingGroup.groupName == "Left")
         {
-            mesh.enabled = false;
+            MeshRenderer[] meshes = lHand.GetComponentsInChildren<MeshRenderer>();
+            foreach (var mesh in meshes)
+            {
+                mesh.enabled = false;
+            }
+            //transform.position = lHand.transform.position;
+            //this.GetComponent<Rigidbody>().Move(lHand.transform.position, lHand.transform.rotation);   NADA SIRVE ALV!!
+            //this.transform.SetLocalPositionAndRotation(Vector3.zero, this.transform.rotation);
         }
+        else
+        {
+            MeshRenderer[] meshes = rHand.GetComponentsInChildren<MeshRenderer>();
+            foreach (var mesh in meshes)
+            {
+                mesh.enabled = false;
+            }
+            //transform.position = rHand.transform.position;
+            //this.GetComponent<Rigidbody>().Move(rHand.transform.position, rHand.transform.rotation);   AAAAAAAAAAAAA!!!!
+            //this.transform.SetLocalPositionAndRotation(Vector3.zero, this.transform.rotation);
+        }
+        Debug.Log("WeaponPickUp");
+        _grabbed = true;
     }
     
     private void DropWeapon(XRBaseInteractor hand)
     {
-        _canShoot = true;
-        _flag = false;
-        MeshRenderer[] meshes = hand.GetComponentsInChildren<MeshRenderer>();
-        foreach (var mesh in meshes)
+        if (hand.containingGroup.groupName == "Left")
         {
-            mesh.enabled = true;
+            MeshRenderer[] meshes = lHand.GetComponentsInChildren<MeshRenderer>();
+            foreach (var mesh in meshes)
+            {
+                mesh.enabled = true;
+            }
         }
+        else
+        {
+            MeshRenderer[] meshes = rHand.GetComponentsInChildren<MeshRenderer>();
+            foreach (var mesh in meshes)
+            {
+                mesh.enabled = true;
+            }
+        }
+        Debug.Log("WeaponDrop");
+        _grabbed = false;
+        StopCoroutine("ShootInterval");
+        _canShoot = true;
+        _isShooting = false;
     }
     
     private void ShootStart(XRBaseInteractor hand)
     {
-        _flag = true;
-        if(!_canShoot)return;
-        Shooting();
-        StartCoroutine("ShootInterval");
+        Debug.Log("ShootStart");
+        _isShooting = true;
     }
     
     private void ShootStop(XRBaseInteractor hand)
     {
+        Debug.Log("ShootStop");
         StopCoroutine("ShootInterval");
         _canShoot = true;
-        _flag = false;
+        _isShooting = false;
     }
     
     private IEnumerator ShootInterval()
@@ -98,13 +133,17 @@ public class GunShootRayCast : MonoBehaviour
 
     private void Shooting()
     {
-        if(!_flag || !_canShoot) return;
-        Shoot();
+        if (_canShoot && _isShooting && _grabbed)
+        {
+            Shoot();
+        }
+        StartCoroutine("ShootInterval");
     }
     
     private void Shoot()
     {
-        ParticleSystem shoot = ((int)Random.Range(0, 1) > 0) ? shootParticleExtra : shootParticle;
+        if(!_canShoot || !_grabbed || !_isShooting) return;
+        ParticleSystem shoot = (Random.Range(0, 10) > 5)? shootParticleExtra : shootParticle;
         shoot.Play();
         usedBullet.Play();
         if (Physics.Raycast(nozzle.position, _dir, out _hit, shootingRange))
@@ -138,7 +177,6 @@ public class GunShootRayCast : MonoBehaviour
                 bHole.transform.SetParent(bulletHoleContainer.transform);
             }
         }
-            
     }
 
     private void LaserThing()
