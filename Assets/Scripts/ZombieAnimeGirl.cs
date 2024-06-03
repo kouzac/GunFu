@@ -14,6 +14,8 @@ public class ZombieAnimeGirl : MonoBehaviour
     [SerializeField] private GameObject player;
     private Rigidbody _rb;
     private bool _ded;
+    [SerializeField] private float attackInterval;
+    private bool _canAttack;
 
     private bool _crawler;
 
@@ -38,6 +40,13 @@ public class ZombieAnimeGirl : MonoBehaviour
         _rb.velocity = new Vector3(trgtDir.x*speed, _rb.velocity.y, trgtDir.z*speed);
         Vector3 plaPosNoY = new Vector3(plaPos.x, selfPos.y, plaPos.z);
         transform.LookAt(plaPosNoY);
+        if (_canAttack && (Vector3.Distance(this.transform.position, player.transform.position) <= 1))
+        {
+            animator.SetBool("Attack", true);
+            player.GetComponent<Player>().Hurt(1);
+            _canAttack = false;
+            StartCoroutine("AttackCd");
+        }
     }
 
     private void AnimationUpdates()
@@ -70,5 +79,12 @@ public class ZombieAnimeGirl : MonoBehaviour
                 Destroy(this.gameObject, 5);
             }
         }
+    }
+
+    private IEnumerator AttackCd(float time)
+    {
+        animator.SetBool("Attack", false);
+        yield return new WaitForSeconds(time);
+        _canAttack = true;
     }
 }

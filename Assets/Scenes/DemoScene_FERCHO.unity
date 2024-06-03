@@ -10965,6 +10965,7 @@ MonoBehaviour:
   bloodExplosionFX: {fileID: 1870896945912753184, guid: 8295e22d06236fb468cda5f2a4491fff,
     type: 3}
   player: {fileID: 1281927389}
+  attackInterval: 0
 --- !u!1 &628880050
 GameObject:
   m_ObjectHideFlags: 0
@@ -11356,6 +11357,27 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1731298970}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &721888974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 721888971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d43d38cb677349144b5611a437bf433e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 10
+  lowHealth: {fileID: -4572132516008573671, guid: c40be3174f62c4acf8c1216858c64956,
+    type: 2}
+  deathTxt: {fileID: 6961155895158752458, guid: c40be3174f62c4acf8c1216858c64956,
+    type: 2}
+  deathExtra: {fileID: -4744985797971640284, guid: c40be3174f62c4acf8c1216858c64956,
+    type: 2}
+  invertColors: {fileID: -1782876513626382905, guid: c40be3174f62c4acf8c1216858c64956,
+    type: 2}
 --- !u!1 &739802040
 GameObject:
   m_ObjectHideFlags: 0
@@ -17320,7 +17342,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 1f74a45b6684e3348818b43cc72bc417,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 1f74a45b6684e3348818b43cc72bc417,
         type: 3}
@@ -26513,12 +26535,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e24cb749b80160c44a581bc5e1baecee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 50
+  hp: 5
   animator: {fileID: 1615940744}
   speed: 1
   bloodExplosionFX: {fileID: 1870896945912753184, guid: 8295e22d06236fb468cda5f2a4491fff,
     type: 3}
   player: {fileID: 721888971}
+  attackInterval: 3
 --- !u!95 &1615940744
 Animator:
   serializedVersion: 5
@@ -32560,6 +32583,10 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7696548424635294048, guid: 895f6f3c2d334633b5800312285058d2,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 721888974}
     - targetCorrespondingSourceObject: {fileID: 9014170783809206332, guid: 895f6f3c2d334633b5800312285058d2,
         type: 3}
       insertIndex: -1
