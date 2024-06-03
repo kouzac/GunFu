@@ -30,7 +30,6 @@ public class GunShootRayCast : MonoBehaviour
     private bool _grabbed;
     private XRGrabInteractable _xrInteractable;
     private RaycastHit _hit;
-    private Transform _laserEnd;
     private Vector3 _dir;
     
     void Awake()
@@ -104,7 +103,7 @@ public class GunShootRayCast : MonoBehaviour
             }
         }
         Debug.Log("WeaponDrop");
-        _grabbed = false;
+        //_grabbed = false;
         StopCoroutine("ShootInterval");
         _canShoot = true;
         _isShooting = false;

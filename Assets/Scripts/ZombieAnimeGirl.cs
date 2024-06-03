@@ -21,6 +21,7 @@ public class ZombieAnimeGirl : MonoBehaviour
 
     private void Awake()
     {
+        _canAttack = true;
         _initHp = hp;
         _crawler = false;
         player = GameObject.FindWithTag("Player");
@@ -37,11 +38,13 @@ public class ZombieAnimeGirl : MonoBehaviour
         Vector3 selfPos = this.transform.position;
         Vector3 trgtDir = new Vector3(plaPos.x - selfPos.x, plaPos.y - selfPos.y, plaPos.z - selfPos.z);
         trgtDir.Normalize();
+        if (!_canAttack) return;
         _rb.velocity = new Vector3(trgtDir.x*speed, _rb.velocity.y, trgtDir.z*speed);
         Vector3 plaPosNoY = new Vector3(plaPos.x, selfPos.y, plaPos.z);
         transform.LookAt(plaPosNoY);
-        if (_canAttack && (Vector3.Distance(this.transform.position, player.transform.position) <= 1))
+        if (_canAttack && (Vector3.Distance(selfPos, plaPos) <= 0.8))
         {
+            Debug.Log("Attacked");
             animator.SetBool("Attack", true);
             player.GetComponent<Player>().Hurt(1);
             _canAttack = false;
@@ -65,7 +68,7 @@ public class ZombieAnimeGirl : MonoBehaviour
             animator.SetBool("Death", true);
             hp = 0;
             if (!_crawler)
-            {
+            {animator.SetBool("Attack", true);
                 _crawler = (Random.Range(0, 10) < 1);
                 hp = (_crawler) ? (int)Random.Range(1, _initHp) : 0;
                 animator.SetBool("Death", false);
@@ -76,15 +79,34 @@ public class ZombieAnimeGirl : MonoBehaviour
                 GameObject a = Instantiate(bloodExplosionFX);
                 a.transform.position = this.transform.position;
                 a.transform.Rotate(a.transform.up, Random.Range(0,360));
+                _rb.useGravity = false;
+                SphereCollider[] f = this.GetComponentsInChildren<SphereCollider>();
+                foreach (SphereCollider sphere in f)
+                {
+                    sphere.enabled = false;
+                }
+                _rb.velocity = new Vector3(0, 0, 0);
+                this.transform.position = new Vector3(transform.position.x, transform.position.y - 0.75f, transform.position.z);
+                animator.SetBool("Explode", true);
+                StartCoroutine("Explode");
                 Destroy(this.gameObject, 5);
+
             }
         }
     }
 
-    private IEnumerator AttackCd(float time)
+    private IEnumerator Explode()
     {
+        yield return new WaitForSeconds(4.9f);
+        GameObject a = Instantiate(bloodExplosionFX);
+        a.transform.position = this.transform.position + new Vector3(0,1f,0);
+        a.transform.Rotate(a.transform.up, Random.Range(0, 360));
+    }
+
+    private IEnumerator AttackCd()
+    {
+        yield return new WaitForSeconds(attackInterval);
         animator.SetBool("Attack", false);
-        yield return new WaitForSeconds(time);
         _canAttack = true;
     }
 }

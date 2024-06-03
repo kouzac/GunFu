@@ -16,7 +16,7 @@ public class Bullet : MonoBehaviour
     private void Awake()
     {
         _player = GameObject.FindGameObjectWithTag("Player");
-        Destroy(this.gameObject, 5);
+        Destroy(this.gameObject, 3);
     }
 
     private void OnTriggerEnter(Collider other)

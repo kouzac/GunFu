@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
         if (health <= 0)
         {
             lowHealth.SetActive(false);
-            deathTxt.SetActive(true);
+            //deathTxt.SetActive(true);
             deathExtra.SetActive(true);
             invertColors.SetActive(true);
         }
