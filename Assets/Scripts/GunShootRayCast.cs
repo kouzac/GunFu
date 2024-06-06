@@ -18,6 +18,7 @@ public class GunShootRayCast : MonoBehaviour
     [SerializeField] private float shootingRange;
     [SerializeField] private float shootInterval;
     [SerializeField] private bool hasAutoShoot;
+    [SerializeField] private bool hasLaser;
     [SerializeField] private Transform laserStart;
     [SerializeField] private LineRenderer lineRenderer;
     [SerializeField] private LayerMask selfLayer;
@@ -45,7 +46,14 @@ public class GunShootRayCast : MonoBehaviour
         _dir.Normalize();
         
         if (hasAutoShoot && _canShoot) Shooting();
-        LaserThing();
+
+        if (hasLaser) LaserThing();
+
+        if(this.transform.position.y <= -4)
+        {
+            this.GetComponent<Rigidbody>().velocity = new Vector3(0, -2, 0);
+            this.transform.position = new Vector3(0, 10, 0);
+        }
     }
 
     private void WeaponEventsSetup()
@@ -103,7 +111,6 @@ public class GunShootRayCast : MonoBehaviour
             }
         }
         Debug.Log("WeaponDrop");
-        //_grabbed = false;
         StopCoroutine("ShootInterval");
         _canShoot = true;
         _isShooting = false;

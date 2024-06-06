@@ -16,6 +16,7 @@ public class ZombieAnimeGirl : MonoBehaviour
     private bool _ded;
     [SerializeField] private float attackInterval;
     private bool _canAttack;
+    private GameObject mainCamera;
 
     private bool _crawler;
 
@@ -28,13 +29,14 @@ public class ZombieAnimeGirl : MonoBehaviour
         _rb = this.GetComponent<Rigidbody>();
         animator.SetBool("Alt", (Random.Range(0, 10) > 5));
         animator.SetBool("Spawn", true);
+        mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
     }
 
     void Update()
     {
         if(_ded) return;
         AnimationUpdates();
-        Vector3 plaPos = player.GetComponent<Transform>().position;
+        Vector3 plaPos = mainCamera.GetComponent<Transform>().position;
         Vector3 selfPos = this.transform.position;
         Vector3 trgtDir = new Vector3(plaPos.x - selfPos.x, plaPos.y - selfPos.y, plaPos.z - selfPos.z);
         trgtDir.Normalize();
@@ -42,7 +44,7 @@ public class ZombieAnimeGirl : MonoBehaviour
         _rb.velocity = new Vector3(trgtDir.x*speed, _rb.velocity.y, trgtDir.z*speed);
         Vector3 plaPosNoY = new Vector3(plaPos.x, selfPos.y, plaPos.z);
         transform.LookAt(plaPosNoY);
-        if (_canAttack && (Vector3.Distance(selfPos, plaPos) <= 0.8))
+        if (_canAttack && (Vector3.Distance(selfPos, plaPos) <= 1.75f))
         {
             Debug.Log("Attacked");
             animator.SetBool("Attack", true);
@@ -85,12 +87,13 @@ public class ZombieAnimeGirl : MonoBehaviour
                 {
                     sphere.enabled = false;
                 }
+                //Agregar score
+                player.GetComponent<Player>().score++;
                 _rb.velocity = new Vector3(0, 0, 0);
                 this.transform.position = new Vector3(transform.position.x, transform.position.y - 0.75f, transform.position.z);
                 animator.SetBool("Explode", true);
                 StartCoroutine("Explode");
                 Destroy(this.gameObject, 5);
-
             }
         }
     }
