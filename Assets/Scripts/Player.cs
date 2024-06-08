@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     [SerializeField] private int health;
     [SerializeField] private Transform tpPoint;
     [SerializeField] private ScriptableRendererFeature lowHealth, deathTxt, deathExtra, invertColors;
-    [SerializeField] private GameObject XRRig;
+    [SerializeField] private GameObject xrRig;
 
     private int _maxHealth;
     public bool ded = true;
@@ -39,11 +39,6 @@ public class Player : MonoBehaviour
         }
         if (health <= 0)
         {
-            lowHealth.SetActive(false);
-            //deathTxt.SetActive(true);
-            deathExtra.SetActive(true);
-            //invertColors.SetActive(true);
-            ded = true;
             StartCoroutine("Tp");
         }
     }
@@ -62,8 +57,13 @@ public class Player : MonoBehaviour
 
     private IEnumerator Tp()
     {
-        yield return new WaitForSeconds(1);
-        XRRig.transform.position = tpPoint.position;
+        lowHealth.SetActive(false);
+        //deathTxt.SetActive(true);
+        deathExtra.SetActive(true);
+        //invertColors.SetActive(true);
+        ded = true;
+        yield return new WaitForSeconds(1.5f);
+        xrRig.transform.position = tpPoint.position;
         lowHealth.SetActive(false);
         deathExtra.SetActive(false);
         health = _maxHealth;
