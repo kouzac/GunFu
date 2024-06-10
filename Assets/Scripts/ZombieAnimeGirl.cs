@@ -69,28 +69,21 @@ public class ZombieAnimeGirl : MonoBehaviour
         {
             animator.SetBool("Death", true);
             hp = 0;
-            if (!_crawler)
+           /* if (!_crawler)
             {animator.SetBool("Attack", true);
                 _crawler = (Random.Range(0, 10) < 1);
                 hp = (_crawler) ? (int)Random.Range(1, _initHp) : 0;
                 animator.SetBool("Death", false);
-            }
+            }  */
             if (hp <= 0)
             {
                 _ded = true;
                 GameObject a = Instantiate(bloodExplosionFX);
                 a.transform.position = this.transform.position;
                 a.transform.Rotate(a.transform.up, Random.Range(0,360));
-                _rb.useGravity = false;
-                SphereCollider[] f = this.GetComponentsInChildren<SphereCollider>();
-                foreach (SphereCollider sphere in f)
-                {
-                    sphere.enabled = false;
-                }
                 //Agregar score
                 player.GetComponent<Player>().score++;
-                _rb.velocity = new Vector3(0, 0, 0);
-                this.transform.position = new Vector3(transform.position.x, transform.position.y - 0.75f, transform.position.z);
+                StartCoroutine("AAAAAAA");
                 animator.SetBool("Explode", true);
                 StartCoroutine("Explode");
                 Destroy(this.gameObject, 5);
@@ -111,5 +104,18 @@ public class ZombieAnimeGirl : MonoBehaviour
         yield return new WaitForSeconds(attackInterval);
         animator.SetBool("Attack", false);
         _canAttack = true;
+    }
+
+    private IEnumerator AAAAAAA()
+    {
+        yield return new WaitForSeconds(1.5f);
+        _rb.useGravity = false;
+        SphereCollider[] f = this.GetComponentsInChildren<SphereCollider>();
+        foreach (SphereCollider sphere in f)
+        {
+            sphere.enabled = false;
+        }
+        _rb.velocity = new Vector3(0, 0, 0);
+        this.transform.position = new Vector3(transform.position.x, transform.position.y - 0.75f, transform.position.z);
     }
 }

@@ -31,7 +31,7 @@ public class Spawn : MonoBehaviour
     private IEnumerator TrySpawn()
     {
         canTry = false;
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(1.75f);
         Vector3 pos = spawnPosArr[Random.Range(0, spawnPosArr.Length)].position;
         GameObject enemy = Instantiate(enemyPrefab);
         enemy.transform.position = pos;

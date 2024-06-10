@@ -25,6 +25,7 @@ public class GunShootRayCast : MonoBehaviour
     [SerializeField] private GameObject laserEnd;
     [SerializeField] private GameObject bulletHoleContainer, bulletHolePrefab, bulletHoleExtra;
     [SerializeField] private GameObject rHand, lHand;
+    [SerializeField] private AudioSource sound;
 
     private bool _canShoot;
     private bool _isShooting;
@@ -151,6 +152,7 @@ public class GunShootRayCast : MonoBehaviour
         if(!_canShoot || !_grabbed || !_isShooting) return;
         ParticleSystem shoot = (Random.Range(0, 10) > 5)? shootParticleExtra : shootParticle;
         shoot.Play();
+        sound.Play();
         usedBullet.Play();
         if (Physics.Raycast(nozzle.position, _dir, out _hit, shootingRange))
         {
