@@ -38490,6 +38490,11 @@ PrefabInstance:
       propertyPath: m_Range
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 4020351743718368736, guid: ebff46ad95c9a5e408ccc4bd93c6f385,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4673003189682897691, guid: ebff46ad95c9a5e408ccc4bd93c6f385,
         type: 3}
       propertyPath: lHand
@@ -38514,6 +38519,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Range
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7499046051735724821, guid: ebff46ad95c9a5e408ccc4bd93c6f385,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
